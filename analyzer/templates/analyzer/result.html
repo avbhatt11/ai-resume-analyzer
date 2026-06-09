@@ -1,0 +1,73 @@
+{% extends 'analyzer/base.html' %}
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+.result-wrapper {
+    min-height: 92vh; background: #1a2744; padding: 40px 20px;
+}
+.result-container { max-width: 800px; margin: 0 auto; }
+.result-header {
+    background: #243057; border-radius: 16px 16px 0 0;
+    padding: 35px; text-align: center;
+    animation: fadeInUp 0.6s ease;
+    border: 1px solid #2a3a6a; border-bottom: 3px solid #4ecdc4;
+}
+.result-header h2 { color: #4ecdc4; font-size: 2rem; margin-bottom: 5px; }
+.result-header p { color: #a0aec0; }
+.success-icon { font-size: 4rem; display: block; margin-bottom: 15px; }
+.result-card {
+    background: #243057; padding: 40px;
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    animation: fadeInUp 0.8s ease;
+    border: 1px solid #2a3a6a; border-top: none;
+}
+#feedback h2 {
+    color: #4ecdc4; font-size: 1.2rem;
+    margin: 25px 0 12px; padding: 10px 15px;
+    background: #1a2744; border-radius: 8px;
+    border-left: 4px solid #4ecdc4;
+    animation: slideIn 0.5s ease;
+}
+#feedback h3 { color: #a0aec0; margin: 15px 0 8px; }
+#feedback p { color: #cbd5e0; line-height: 1.8; margin-bottom: 12px; }
+#feedback ul, #feedback ol { padding-left: 25px; margin-bottom: 15px; }
+#feedback li { color: #cbd5e0; line-height: 1.9; margin-bottom: 5px; }
+#feedback strong { color: white; }
+.btn-again {
+    display: block; text-align: center; margin-top: 35px;
+    background: #4ecdc4; color: #1a2744; padding: 16px 40px;
+    text-decoration: none; border-radius: 8px;
+    font-size: 1.1rem; font-weight: 800;
+    transition: all 0.3s;
+}
+.btn-again:hover { background: #3dbdb5; transform: translateY(-3px); color: #1a2744;
+    box-shadow: 0 10px 30px rgba(78,205,196,0.4); }
+</style>
+
+<div class="result-wrapper">
+    <div class="result-container">
+        <div class="result-header">
+            <span class="success-icon">✅</span>
+            <h2>Analysis for {{ name }}</h2>
+            <p>Here is your AI-powered resume feedback</p>
+        </div>
+        <div class="result-card">
+            <div id="feedback"></div>
+            <a href="/upload/" class="btn-again">🔄 Analyze Another Resume</a>
+        </div>
+    </div>
+</div>
+<script>
+    const raw = `{{ feedback|escapejs }}`;
+    document.getElementById('feedback').innerHTML = marked.parse(raw);
+</script>
+{% endblock %}
